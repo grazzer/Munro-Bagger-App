@@ -17,14 +17,16 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideMunroRepository(api: MunroApi) = MunroRepository(api)
+    fun provideMunroRepository(
+        api: MunroApi
+    ) = MunroRepository(api)
 
     @Singleton
     @Provides
     fun providesMunroApi(): MunroApi{
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://munroapi.herokuapp.com/")
+            .baseUrl("https://hill-bagging-api.onrender.com/")
             .build()
             .create(MunroApi::class.java)
     }

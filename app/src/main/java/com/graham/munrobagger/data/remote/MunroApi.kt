@@ -10,9 +10,14 @@ interface MunroApi {
     @GET("munros")
     suspend fun getMunrosList(): MunroList
 
-    @GET("munros/name{name}")
-    suspend fun getMunro(
+    @GET("hills/{name}")
+    suspend fun getMunroByName(
         @Path("name") name: String
+    ): Munro
+
+    @GET("hills/{number}")
+    suspend fun getMunroByNumber(
+        @Path("number") name: String
     ): Munro
 
 }
