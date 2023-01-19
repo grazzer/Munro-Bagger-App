@@ -6,9 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
@@ -21,11 +18,17 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.graham.munrobagger.data.models.MunroListEntry
 
@@ -48,9 +51,12 @@ fun MunroListScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
-            )
-        }
+            ){
 
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            MunroList(navController = navController)
+        }
     }
 }
 
@@ -98,7 +104,43 @@ fun searchBar (
 }
 
 @Composable
-fun munroEntry(
+fun MunroList(
+    navController: NavController,
+    viewModel: MunroListViewModel = hiltViewModel()
+){
+    val munroList by remember {viewModel.munroList}
+    val loadError by remember {viewModel.loadError}
+    val isLoading by remember {viewModel.isLoading}
+
+    LazyColumn(contentPadding = PaddingValues(16.dp)){
+        val itemCount = if(munroList.size % 2 == 0){
+            munroList.size /2
+        }else{
+            munroList.size / 2 + 1
+        }
+        items(itemCount){
+            MunroRow(rowIndex = it , entries = munroList, navController = navController)
+        }
+    }
+    Box(
+        contentAlignment = Center,
+        modifier = Modifier.fillMaxSize()
+    ){
+        if(isLoading){
+            CircularProgressIndicator(color = MaterialTheme.colors.primary)
+        }
+        if(loadError.isNotEmpty()){
+            retrySection(error = loadError) {
+                viewModel.loadMunro()
+            }
+        }
+    }
+}
+
+
+
+@Composable
+fun MunroEntry(
      entry: MunroListEntry,
      navController: NavController,
      modifier: Modifier = Modifier,
@@ -106,7 +148,7 @@ fun munroEntry(
 ){
     Box(
         contentAlignment = Center,
-        modifier = Modifier
+        modifier = modifier
             .shadow(5.dp, RoundedCornerShape(10.dp))
             .clip(RoundedCornerShape(10.dp))
             .aspectRatio(1f)
@@ -114,7 +156,7 @@ fun munroEntry(
                 Brush.verticalGradient(
                     listOf(
                         MaterialTheme.colors.primary,
-                        MaterialTheme.colors.secondary
+                        MaterialTheme.colors.surface
                     )
                 )
             )
@@ -124,10 +166,12 @@ fun munroEntry(
     ){
         Column {
             Text(text = entry.munroName,
-                Modifier
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
                     .align(CenterHorizontally)
+                    .fillMaxWidth()
             )
-
         }
     }
 }
@@ -139,14 +183,14 @@ fun MunroRow(
 ){
     Column {
         Row {
-            munroEntry(
+            MunroEntry(
                 entry = entries[rowIndex * 2],
                 navController = navController,
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(16.dp))
             if (entries.size >= rowIndex * 2 +2){
-                munroEntry(
+                MunroEntry(
                     entry = entries[rowIndex * 2 + 1],
                     navController = navController,
                     modifier = Modifier.weight(1f)
@@ -156,5 +200,22 @@ fun MunroRow(
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+@Composable
+fun retrySection(
+    error: String,
+    onRetry: () -> Unit
+){
+    Column {
+        Text(text = error, fontSize = 18.sp, color = Color.Red)
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(
+            onClick = { onRetry()},
+            modifier = Modifier.align(CenterHorizontally)
+        ){
+            Text(text = "Retry")
+        }
     }
 }
