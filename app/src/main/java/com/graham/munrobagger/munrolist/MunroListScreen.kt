@@ -30,11 +30,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.graham.munrobagger.data.models.MunroListEntry
 
 @Composable
 fun MunroListScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: MunroListViewModel = hiltViewModel()
 ){
     Surface(
         color = MaterialTheme.colors.background,
@@ -52,7 +54,7 @@ fun MunroListScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ){
-
+                viewModel.searchMunroList(it)
             }
             Spacer(modifier = Modifier.height(16.dp))
             MunroList(navController = navController)
@@ -111,6 +113,7 @@ fun MunroList(
     val munroList by remember {viewModel.munroList}
     val loadError by remember {viewModel.loadError}
     val isLoading by remember {viewModel.isLoading}
+    val isSearching by remember {viewModel.isSearching}
 
     LazyColumn(contentPadding = PaddingValues(16.dp)){
         val itemCount = if(munroList.size % 2 == 0){
