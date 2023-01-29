@@ -164,7 +164,7 @@ fun MunroEntry(
                 )
             )
             .clickable {
-                navController.navigate("munroDetailScreen/${entry.munroName}")
+                navController.navigate("MunroDetailScreen/${entry.munroName}")
             }
     ){
         Column {

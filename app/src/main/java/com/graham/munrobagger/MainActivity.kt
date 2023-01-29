@@ -10,15 +10,18 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
+import com.graham.munrobagger.munrodetail.MunroDetailScreen
 import com.graham.munrobagger.munrolist.MunroListScreen
 import com.graham.munrobagger.ui.theme.MunroBaggerTheme
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -41,9 +44,12 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     ){
-                        val dominantName = remember {
+                        val munroName = remember {
                             it.arguments?.getString("munroName")
                         }
+                        MunroDetailScreen(
+                            MunroName = munroName?:"",
+                            navController = navController )
                     }
                 }
             }
