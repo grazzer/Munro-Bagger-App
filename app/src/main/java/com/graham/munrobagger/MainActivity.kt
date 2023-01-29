@@ -37,18 +37,18 @@ class MainActivity : ComponentActivity() {
                     composable("munroListScreen"){
                         MunroListScreen(navController = navController)
                     }
-                    composable("munroDetailScreen/{munroName}",
+                    composable("munroDetailScreen/{munroNumber}",
                         arguments = listOf(
-                            navArgument("munroName"){
+                            navArgument("munroNumber"){
                                 type = NavType.StringType
                             }
                         )
                     ){
-                        val munroName = remember {
-                            it.arguments?.getString("munroName")
+                        val munroNumber = remember {
+                            it.arguments?.getString("munroNumber")
                         }
                         MunroDetailScreen(
-                            MunroName = munroName?:"",
+                            munroNumber = munroNumber?:"",
                             navController = navController )
                     }
                 }

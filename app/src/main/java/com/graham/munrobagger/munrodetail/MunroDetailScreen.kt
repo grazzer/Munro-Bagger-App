@@ -30,14 +30,14 @@ import com.graham.munrobagger.util.Resource
 
 @Composable
 fun MunroDetailScreen(
-    MunroName: String,
+    munroNumber: String,
     navController: NavController,
     topPadding: Dp = 20.dp,
     ImageSize: Dp = 200.dp,
     viewModel: MunroDetailViewModel = hiltViewModel()
 ) {
     val munroInfo = produceState<Resource<Munro>>(initialValue = Resource.Loading()){
-        value =  viewModel.getMunroInfo(MunroName)
+        value =  viewModel.getMunroInfo(munroNumber)
     }.value
 
     Box(modifier = Modifier
@@ -126,11 +126,7 @@ fun MunroDetailStateWrapper(
 ) {
     when(munroInfo){
         is Resource.Success -> {
-            Text(
-                text = "Success",
-                color = Color.Blue,
-                modifier = modifier
-            )
+
         }
         is Resource.Error -> {
             Text(

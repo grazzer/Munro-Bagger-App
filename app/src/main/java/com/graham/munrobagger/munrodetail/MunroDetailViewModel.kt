@@ -12,7 +12,7 @@ import javax.inject.Inject
 class MunroDetailViewModel @Inject constructor(
     private val repository: MunroRepository
 ) : ViewModel() {
-    suspend fun getMunroInfo(munroName: String): Resource<Munro> {
-        return repository.getMunro(munroName)
+    suspend fun getMunroInfo(munroNumber: String): Resource<Munro> {
+        return repository.getMunro(munroNumber)
     }
 }

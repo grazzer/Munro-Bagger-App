@@ -21,9 +21,9 @@ class MunroRepository @Inject constructor
         return Resource.Success(response)
     }
 
-    suspend fun getMunro(munroName: String): Resource<Munro>{
+    suspend fun getMunro(munroNumber: String): Resource<Munro>{
         val response = try {
-            api.getMunroByName(munroName)
+            api.getMunroByNumber(munroNumber)
         } catch (e: Exception) {
             return Resource.Error("An unknown error has occured.")
         }
