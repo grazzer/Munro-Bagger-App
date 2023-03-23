@@ -1,8 +1,10 @@
 package com.graham.munrobagger.munrodetail
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
@@ -18,22 +20,25 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.graham.munrobagger.data.remote.responses.Munro
 import com.graham.munrobagger.util.Resource
-
-
+import javax.annotation.meta.When
 
 
 @Composable
 fun MunroDetailScreen(
     munroNumber: String,
+    painter: Painter,
     navController: NavController,
     topPadding: Dp = 20.dp,
-    ImageSize: Dp = 200.dp,
+    ImageSize: Dp = 350.dp,
     viewModel: MunroDetailViewModel = hiltViewModel()
 ) {
     val munroInfo = produceState<Resource<Munro>>(initialValue = Resource.Loading()){
@@ -42,7 +47,7 @@ fun MunroDetailScreen(
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(Color.Green)
+        .background(MaterialTheme.colors.background)
         .padding(bottom = 16.dp)
     ){
         MunroDetailTopSection(
@@ -61,7 +66,7 @@ fun MunroDetailScreen(
                     start = 16.dp,
                     end = 16.dp,
                     bottom = 16.dp
-                    )
+                )
                 .shadow(10.dp, RoundedCornerShape(10.dp))
                 .clip(RoundedCornerShape(10.dp))
                 .background(MaterialTheme.colors.surface)
@@ -78,11 +83,18 @@ fun MunroDetailScreen(
                 )
         )
         Box(contentAlignment = Alignment.TopCenter,
+
             modifier = Modifier
                 .fillMaxSize()
         ) {
             if(munroInfo is Resource.Success){
-                Text(text = munroInfo.data?.Number.toString())
+
+//                Image(
+//                    painter = painterResource(),
+//                    contentDescription = "Munro Icon",
+//                    contentScale = ContentScale.Crop
+//                )
+                Text(text = "# " + munroInfo.data?.Number.toString())
             }
         }
     }
@@ -98,7 +110,7 @@ fun MunroDetailTopSection(
         .background(
             Brush.verticalGradient(
                 listOf(
-                    Color.Black,
+                    Color.LightGray,
                     Color.Transparent
                 )
             )
@@ -126,7 +138,14 @@ fun MunroDetailStateWrapper(
 ) {
     when(munroInfo){
         is Resource.Success -> {
-
+//                Box(contentAlignment = Alignment.TopCenter,
+//                modifier = Modifier
+//                    .fillMaxSize()
+//            ) {
+//                if(munroInfo is Resource.Success){
+//                    Text(text = "# " + munroInfo.data?.Number.toString())
+//                }
+//            }
         }
         is Resource.Error -> {
             Text(

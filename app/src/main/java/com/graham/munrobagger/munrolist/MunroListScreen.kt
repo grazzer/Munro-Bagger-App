@@ -24,9 +24,12 @@ import androidx.compose.material.*
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -52,11 +55,11 @@ fun MunroListScreen(
                 hint = "Search Munro's ...",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding( horizontal = 16.dp, vertical = 10.dp)
             ){
                 viewModel.searchMunroList(it)
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             MunroList(navController = navController)
         }
     }
@@ -116,11 +119,7 @@ fun MunroList(
     val isSearching by remember {viewModel.isSearching}
 
     LazyColumn(contentPadding = PaddingValues(16.dp)){
-        val itemCount = if(munroList.size % 2 == 0){
-            munroList.size /2
-        }else{
-            munroList.size / 2 + 1
-        }
+        val itemCount = munroList.size
         items(itemCount){
             MunroRow(rowIndex = it , entries = munroList, navController = navController)
         }
@@ -140,8 +139,6 @@ fun MunroList(
     }
 }
 
-
-
 @Composable
 fun MunroEntry(
      entry: MunroListEntry,
@@ -154,30 +151,51 @@ fun MunroEntry(
         modifier = modifier
             .shadow(5.dp, RoundedCornerShape(10.dp))
             .clip(RoundedCornerShape(10.dp))
-            .aspectRatio(1f)
+            .aspectRatio(3.4f)
             .background(
-                Brush.verticalGradient(
-                    listOf(
-                        MaterialTheme.colors.primary,
-                        MaterialTheme.colors.surface
-                    )
-                )
+                MaterialTheme.colors.onPrimary
             )
             .clickable {
                 navController.navigate("MunroDetailScreen/${entry.munroId}")
             }
     ){
-        Column {
-            Text(text = entry.munroName,
-                fontSize = 20.sp,
-                textAlign = TextAlign.Center,
+        Row {
+            Box(
                 modifier = Modifier
-                    .align(CenterHorizontally)
-                    .fillMaxWidth()
-            )
+                    .padding(10.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(
+                    MaterialTheme.colors.primary)
+                    .aspectRatio(1f))
+            Column(modifier = Modifier
+                .padding(top = 4.dp)
+            ){
+                Text(text = entry.munroName,
+                    fontSize = 22.sp,
+                    maxLines = 1,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                Text(text = entry.munroLocation,
+                    fontSize = 14.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                Text(text = entry.munroHeight.toString() + "m",
+                    fontSize = 14.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                Text(text = "# " + entry.munroId.toString(),
+                    fontSize = 14.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
         }
     }
 }
+
 @Composable
 fun MunroRow(
     rowIndex: Int,
@@ -187,20 +205,10 @@ fun MunroRow(
     Column {
         Row {
             MunroEntry(
-                entry = entries[rowIndex * 2],
+                entry = entries[rowIndex],
                 navController = navController,
                 modifier = Modifier.weight(1f)
             )
-            Spacer(modifier = Modifier.width(16.dp))
-            if (entries.size >= rowIndex * 2 +2){
-                MunroEntry(
-                    entry = entries[rowIndex * 2 + 1],
-                    navController = navController,
-                    modifier = Modifier.weight(1f)
-                )
-            } else{
-                Spacer(modifier = Modifier.weight(1f))
-            }
         }
         Spacer(modifier = Modifier.height(16.dp))
     }

@@ -63,7 +63,7 @@ class MunroListViewModel @Inject constructor(
             when(result){
                 is Resource.Success -> {
                         val munroEntries = result.data!!.mapIndexed { index, entry ->
-                        MunroListEntry(entry.Name, entry.Metres.toInt(), entry.Number.toInt())
+                        MunroListEntry(entry.Name, entry.Metres.toInt(), entry.Number.toInt(), entry.County)
                     }
                     loadError.value = ""
                     isLoading.value = false
