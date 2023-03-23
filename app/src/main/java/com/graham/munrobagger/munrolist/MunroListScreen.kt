@@ -40,14 +40,15 @@ import com.graham.munrobagger.data.models.MunroListEntry
 fun MunroListScreen(
     navController: NavController,
     viewModel: MunroListViewModel = hiltViewModel()
-){
+) {
     Surface(
         color = MaterialTheme.colors.background,
         modifier = Modifier.fillMaxSize()
-    ){
+    ) {
         Column {
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "MUNRO BAGGER",
+            Text(
+                text = "MUNRO BAGGER",
                 Modifier
                     .align(CenterHorizontally)
             )
@@ -55,8 +56,8 @@ fun MunroListScreen(
                 hint = "Search Munro's ...",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding( horizontal = 16.dp, vertical = 10.dp)
-            ){
+                    .padding(horizontal = 16.dp, vertical = 10.dp)
+            ) {
                 viewModel.searchMunroList(it)
             }
             Spacer(modifier = Modifier.height(10.dp))
@@ -66,15 +67,15 @@ fun MunroListScreen(
 }
 
 @Composable
-fun searchBar (
+fun searchBar(
     modifier: Modifier = Modifier,
     hint: String = "",
     onSearch: (String) -> Unit = {}
-){
+) {
     var text by remember {
         mutableStateOf("")
     }
-    var isHintDisplayed by remember{
+    var isHintDisplayed by remember {
         mutableStateOf(hint != "")
     }
     Box(modifier = modifier) {
@@ -97,7 +98,7 @@ fun searchBar (
                 }
 
         )
-        if (isHintDisplayed){
+        if (isHintDisplayed) {
             Text(
                 text = hint,
                 color = Color.LightGray,
@@ -112,26 +113,26 @@ fun searchBar (
 fun MunroList(
     navController: NavController,
     viewModel: MunroListViewModel = hiltViewModel()
-){
-    val munroList by remember {viewModel.munroList}
-    val loadError by remember {viewModel.loadError}
-    val isLoading by remember {viewModel.isLoading}
-    val isSearching by remember {viewModel.isSearching}
+) {
+    val munroList by remember { viewModel.munroList }
+    val loadError by remember { viewModel.loadError }
+    val isLoading by remember { viewModel.isLoading }
+    val isSearching by remember { viewModel.isSearching }
 
-    LazyColumn(contentPadding = PaddingValues(16.dp)){
+    LazyColumn(contentPadding = PaddingValues(16.dp)) {
         val itemCount = munroList.size
-        items(itemCount){
-            MunroRow(rowIndex = it , entries = munroList, navController = navController)
+        items(itemCount) {
+            MunroRow(rowIndex = it, entries = munroList, navController = navController)
         }
     }
     Box(
         contentAlignment = Center,
         modifier = Modifier.fillMaxSize()
-    ){
-        if(isLoading){
+    ) {
+        if (isLoading) {
             CircularProgressIndicator(color = MaterialTheme.colors.primary)
         }
-        if(loadError.isNotEmpty()){
+        if (loadError.isNotEmpty()) {
             retrySection(error = loadError) {
                 viewModel.loadMunro()
             }
@@ -141,11 +142,11 @@ fun MunroList(
 
 @Composable
 fun MunroEntry(
-     entry: MunroListEntry,
-     navController: NavController,
-     modifier: Modifier = Modifier,
-     viewModel: MunroListViewModel = hiltViewModel()
-){
+    entry: MunroListEntry,
+    navController: NavController,
+    modifier: Modifier = Modifier,
+    viewModel: MunroListViewModel = hiltViewModel()
+) {
     Box(
         contentAlignment = Center,
         modifier = modifier
@@ -158,35 +159,42 @@ fun MunroEntry(
             .clickable {
                 navController.navigate("MunroDetailScreen/${entry.munroId}")
             }
-    ){
+    ) {
         Row {
             Box(
                 modifier = Modifier
                     .padding(10.dp)
                     .clip(RoundedCornerShape(10.dp))
                     .background(
-                    MaterialTheme.colors.primary)
-                    .aspectRatio(1f))
-            Column(modifier = Modifier
-                .padding(top = 4.dp)
-            ){
-                Text(text = entry.munroName,
+                        MaterialTheme.colors.primary
+                    )
+                    .aspectRatio(1f)
+            )
+            Column(
+                modifier = Modifier
+                    .padding(top = 4.dp)
+            ) {
+                Text(
+                    text = entry.munroName,
                     fontSize = 22.sp,
                     maxLines = 1,
                     modifier = Modifier
                         .fillMaxWidth()
                 )
-                Text(text = entry.munroLocation,
+                Text(
+                    text = entry.munroLocation,
                     fontSize = 14.sp,
                     modifier = Modifier
                         .fillMaxWidth()
                 )
-                Text(text = entry.munroHeight.toString() + "m",
+                Text(
+                    text = entry.munroHeight.toString() + "m",
                     fontSize = 14.sp,
                     modifier = Modifier
                         .fillMaxWidth()
                 )
-                Text(text = "# " + entry.munroId.toString(),
+                Text(
+                    text = "# " + entry.munroId.toString(),
                     fontSize = 14.sp,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -201,7 +209,7 @@ fun MunroRow(
     rowIndex: Int,
     entries: List<MunroListEntry>,
     navController: NavController
-){
+) {
     Column {
         Row {
             MunroEntry(
@@ -218,14 +226,14 @@ fun MunroRow(
 fun retrySection(
     error: String,
     onRetry: () -> Unit
-){
+) {
     Column {
         Text(text = error, fontSize = 18.sp, color = Color.Red)
         Spacer(modifier = Modifier.height(8.dp))
         Button(
-            onClick = { onRetry()},
+            onClick = { onRetry() },
             modifier = Modifier.align(CenterHorizontally)
-        ){
+        ) {
             Text(text = "Retry")
         }
     }

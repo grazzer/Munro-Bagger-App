@@ -1,4 +1,5 @@
 package com.graham.munrobagger.munrodetail
+
 import androidx.lifecycle.ViewModel
 import com.graham.munrobagger.data.remote.responses.Munro
 import com.graham.munrobagger.data.remote.responses.MunroList

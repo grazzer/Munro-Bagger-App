@@ -23,7 +23,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providesMunroApi(): MunroApi{
+    fun providesMunroApi(): MunroApi {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl("https://hill-bagging-api.onrender.com/")

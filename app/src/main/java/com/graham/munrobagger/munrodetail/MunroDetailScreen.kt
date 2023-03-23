@@ -35,21 +35,21 @@ import javax.annotation.meta.When
 @Composable
 fun MunroDetailScreen(
     munroNumber: String,
-    painter: Painter,
     navController: NavController,
     topPadding: Dp = 20.dp,
     ImageSize: Dp = 350.dp,
     viewModel: MunroDetailViewModel = hiltViewModel()
 ) {
-    val munroInfo = produceState<Resource<Munro>>(initialValue = Resource.Loading()){
-        value =  viewModel.getMunroInfo(munroNumber)
+    val munroInfo = produceState<Resource<Munro>>(initialValue = Resource.Loading()) {
+        value = viewModel.getMunroInfo(munroNumber)
     }.value
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colors.background)
-        .padding(bottom = 16.dp)
-    ){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background)
+            .padding(bottom = 16.dp)
+    ) {
         MunroDetailTopSection(
             navController = navController,
             modifier = Modifier
@@ -82,12 +82,13 @@ fun MunroDetailScreen(
                     bottom = 16.dp
                 )
         )
-        Box(contentAlignment = Alignment.TopCenter,
+        Box(
+            contentAlignment = Alignment.TopCenter,
 
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            if(munroInfo is Resource.Success){
+            if (munroInfo is Resource.Success) {
 
 //                Image(
 //                    painter = painterResource(),
@@ -105,16 +106,17 @@ fun MunroDetailTopSection(
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
-    Box(contentAlignment = Alignment.TopStart,
-    modifier = modifier
-        .background(
-            Brush.verticalGradient(
-                listOf(
-                    Color.LightGray,
-                    Color.Transparent
+    Box(
+        contentAlignment = Alignment.TopStart,
+        modifier = modifier
+            .background(
+                Brush.verticalGradient(
+                    listOf(
+                        Color.LightGray,
+                        Color.Transparent
+                    )
                 )
             )
-        )
     ) {
         Icon(imageVector = Icons.Default.ArrowBack,
             contentDescription = null,
@@ -136,7 +138,7 @@ fun MunroDetailStateWrapper(
     modifier: Modifier = Modifier,
     loadingModifier: Modifier = Modifier
 ) {
-    when(munroInfo){
+    when (munroInfo) {
         is Resource.Success -> {
 //                Box(contentAlignment = Alignment.TopCenter,
 //                modifier = Modifier
@@ -152,7 +154,7 @@ fun MunroDetailStateWrapper(
                 text = munroInfo.message!!,
                 color = Color.Red,
                 modifier = modifier
-                )
+            )
         }
         is Resource.Loading -> {
             CircularProgressIndicator(

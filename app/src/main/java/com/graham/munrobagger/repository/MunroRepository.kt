@@ -9,10 +9,9 @@ import javax.inject.Inject
 
 @ActivityScoped
 class MunroRepository @Inject constructor
-    (private val api: MunroApi)
-{
+    (private val api: MunroApi) {
 
-    suspend fun getMunroList(): Resource<MunroList>{
+    suspend fun getMunroList(): Resource<MunroList> {
         val response = try {
             api.getMunrosList()
         } catch (e: Exception) {
@@ -21,7 +20,7 @@ class MunroRepository @Inject constructor
         return Resource.Success(response)
     }
 
-    suspend fun getMunro(munroNumber: String): Resource<Munro>{
+    suspend fun getMunro(munroNumber: String): Resource<Munro> {
         val response = try {
             api.getMunroByNumber(munroNumber)
         } catch (e: Exception) {
