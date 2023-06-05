@@ -1,5 +1,6 @@
 package com.graham.munrobagger.munrolist
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,8 +26,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterEnd
+import androidx.compose.ui.R
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -35,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.graham.munrobagger.data.models.MunroListEntry
+
 
 @Composable
 fun MunroListScreen(
@@ -169,7 +175,13 @@ fun MunroEntry(
                         MaterialTheme.colors.primary
                     )
                     .aspectRatio(1f)
-            )
+            ){
+                Image(
+                    painter = painterResource(id = com.graham.munrobagger.R.drawable.munro_icon),
+                    contentDescription = "Munro Icon",
+                    contentScale = ContentScale.Crop
+                )
+            }
             Column(
                 modifier = Modifier
                     .padding(top = 4.dp)
