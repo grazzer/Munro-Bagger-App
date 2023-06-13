@@ -1,4 +1,4 @@
-package com.graham.munrobagger.munrodetail
+package com.graham.munrobagger.pages.munrodetail
 
 
 import android.util.Log

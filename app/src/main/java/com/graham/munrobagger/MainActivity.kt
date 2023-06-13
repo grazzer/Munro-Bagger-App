@@ -17,8 +17,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
-import com.graham.munrobagger.munrodetail.MunroDetailScreen
-import com.graham.munrobagger.munrolist.MunroListScreen
+import com.graham.munrobagger.pages.addclimb.AddClimbScreen
+import com.graham.munrobagger.pages.munrodetail.MunroDetailScreen
+import com.graham.munrobagger.pages.munrolist.MunroListScreen
 import com.graham.munrobagger.ui.theme.MunroBaggerTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -34,9 +35,12 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                     startDestination = "munroListScreen"
                 ) {
+
                     composable("munroListScreen") {
                         MunroListScreen(navController = navController)
                     }
+
+
                     composable("munroDetailScreen/{munroNumber}",
                         arguments = listOf(
                             navArgument("munroNumber") {
@@ -48,6 +52,23 @@ class MainActivity : ComponentActivity() {
                             it.arguments?.getString("munroNumber")
                         }
                         MunroDetailScreen(
+                            munroNumber = munroNumber ?: "",
+                            navController = navController
+                        )
+                    }
+
+
+                    composable("AddClimbScreen/{munroNumber}",
+                        arguments = listOf(
+                            navArgument("munroNumber") {
+                                type = NavType.StringType
+                            }
+                        )
+                    ) {
+                        val munroNumber = remember {
+                            it.arguments?.getString("munroNumber")
+                        }
+                        AddClimbScreen(
                             munroNumber = munroNumber ?: "",
                             navController = navController
                         )

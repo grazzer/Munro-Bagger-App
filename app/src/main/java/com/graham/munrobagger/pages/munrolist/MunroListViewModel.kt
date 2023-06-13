@@ -1,4 +1,4 @@
-package com.graham.munrobagger.munrolist
+package com.graham.munrobagger.pages.munrolist
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.text.capitalize

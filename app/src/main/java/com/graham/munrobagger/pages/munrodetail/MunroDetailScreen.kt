@@ -1,4 +1,4 @@
-package com.graham.munrobagger.munrodetail
+package com.graham.munrobagger.pages.munrodetail
 
 import android.util.Log
 import androidx.compose.foundation.*
@@ -24,7 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.graham.munrobagger.R
 import com.graham.munrobagger.data.remote.responses.Munro
-import com.graham.munrobagger.munrolist.MunroEntry
+import com.graham.munrobagger.pages.munrolist.MunroEntry
 import com.graham.munrobagger.util.Resource
 
 @Composable
@@ -73,9 +73,9 @@ fun MunroDetailScreen(
             munroInfo = munroInfo,
             modifier = Modifier
                 .fillMaxSize()
-                .align(Alignment.Center),
+                .align(Center),
             loadingModifier = Modifier
-                .align(Alignment.Center),
+                .align(Center),
             viewModel = viewModel,
             navController = navController
         )
@@ -232,7 +232,8 @@ fun MunroDetails(
             )
 
             climbedSection(
-                munroInfo = munroInfo
+                munroInfo = munroInfo,
+                navController = navController
             )
 
 //            ParentMunro(
@@ -303,7 +304,8 @@ fun mapSection(
 
 @Composable
 fun climbedSection(
-    munroInfo: Resource<Munro>
+    munroInfo: Resource<Munro>,
+    navController: NavController
 ){
     sectionHeading("Climbed")
 
@@ -317,37 +319,40 @@ fun climbedSection(
         .padding(10.dp)
     ){
         Column() {
-            Row(
-                Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                ) {
-                    Column() {
-                        StatsRow(icon = R.drawable.ic_date, text = "1/2/2023")
-                        Spacer(modifier = Modifier.height(10.dp))
-                        StatsRow(icon = R.drawable.ic_distance, text = "100 m")
-                    }
-                }
-                Box(
-                    modifier = Modifier
-                        .weight(0.25f)
-                )
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                ) {
-                    Column() {
-                        StatsRow(icon = R.drawable.ic_weather, text = "Sunny")
-                        Spacer(modifier = Modifier.height(10.dp))
-                        StatsRow(icon = R.drawable.ic_time, text = "1:30")
-                    }
-                }
+            FloatingActionButton(onClick = {  navController.navigate("AddClimbScreen/{1}")}) {
+                
             }
-            Spacer(modifier = Modifier.height(10.dp))
-            StatsRow(icon = R.drawable.ic_walkers, text = "graham, sam")
+//            Row(
+//                Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween
+//            ) {
+//                Box(
+//                    modifier = Modifier
+//                        .weight(1f)
+//                ) {
+//                    Column() {
+//                        StatsRow(icon = R.drawable.ic_date, text = "1/2/2023")
+//                        Spacer(modifier = Modifier.height(10.dp))
+//                        StatsRow(icon = R.drawable.ic_distance, text = "100 m")
+//                    }
+//                }
+//                Box(
+//                    modifier = Modifier
+//                        .weight(0.25f)
+//                )
+//                Box(
+//                    modifier = Modifier
+//                        .weight(1f)
+//                ) {
+//                    Column() {
+//                        StatsRow(icon = R.drawable.ic_weather, text = "Sunny")
+//                        Spacer(modifier = Modifier.height(10.dp))
+//                        StatsRow(icon = R.drawable.ic_time, text = "1:30")
+//                    }
+//                }
+//            }
+//            Spacer(modifier = Modifier.height(10.dp))
+//            StatsRow(icon = R.drawable.ic_walkers, text = "graham, sam")
         }
     }
     Spacer(modifier = Modifier
